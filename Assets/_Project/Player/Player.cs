@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent((typeof(Rigidbody2D)))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(TopdownController2d))]
-    public class Actor : MonoBehaviour
+    public class Player : MonoBehaviour
     {
         // components
         [SerializeField] Rigidbody2D rb;
