@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ActorAnimationState
+{
+    None = 0,
+    Idle = 1,
+    Walking = 2,
+    Death = 3,
+    Attacking = 4,
+}
+
 [RequireComponent((typeof(Rigidbody2D)))]
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(TopdownController2d))]
@@ -10,7 +19,10 @@ using UnityEngine;
         // components
         [SerializeField] Rigidbody2D rb;
         [SerializeField] BoxCollider2D collider;
+        [SerializeField] SpriteRenderer sr;
+        [SerializeField] Animator animator;
         [SerializeField] TopdownController2d topdownController;
+        [SerializeField] SpriteRenderer gunSr;
 
         // variables
         [SerializeField] int healthMax = 3;
@@ -18,15 +30,66 @@ using UnityEngine;
         [SerializeField] float moveSpeed = 5f;
 
         Vector2 _inputVec = Vector2.zero;
+        ActorAnimationState _animState = ActorAnimationState.Idle;
 
         void Start() {
             health = healthMax;
         }
 
         void Update() {
+            // is alive?
             _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-            Vector2 moveVec = _inputVec * (moveSpeed * Time.deltaTime);
-            topdownController.Move(moveVec, _inputVec);
+            if (_inputVec.magnitude > 0.1f) {
+                if (_animState != ActorAnimationState.Walking) {
+                    ChangeAnimationState(ActorAnimationState.Walking);
+                }
+                Vector2 moveVec = _inputVec * (moveSpeed * Time.deltaTime);
+                topdownController.Move(moveVec, _inputVec);
+            } else if (_animState != ActorAnimationState.Idle) {
+                ChangeAnimationState(ActorAnimationState.Idle);
+            }
+
+            Vector3 pos = transform.position;
+            Vector3 reticlePos = Reticle.Instance.transform.position;
+            float gunAngle = Mathf.Atan2(pos.y - reticlePos.y, pos.x - reticlePos.x) * Mathf.Rad2Deg;
+
+            if (reticlePos.x >= pos.x) {
+                sr.flipX = true;
+                gunSr.flipX = true;
+                gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle + 180));
+            }
+            else {
+                sr.flipX = false;
+                gunSr.flipX = false;
+                gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle));
+            }
+
+        }
+
+        void ChangeAnimationState(ActorAnimationState newState) {
+            if (newState == _animState) {
+                return;
+            }
+
+            _animState = newState;
+            PlayAnimation();
+        }
+
+        void PlayAnimation() {
+            switch (_animState) {
+                case ActorAnimationState.Idle:
+                    animator.Play("Idle");
+                    break;
+                case ActorAnimationState.Walking:
+                    animator.Play("Walk");
+                    break;
+                case ActorAnimationState.Death:
+                    animator.Play("Death");
+                    break;
+                default:
+                    animator.Play("Idle");
+                    break;
+            }
         }
 
     }

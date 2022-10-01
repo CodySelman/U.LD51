@@ -21,7 +21,6 @@ public class TopdownController2d : RaycastController2d
     
     public override void Start() {
 	    base.Start ();
-        Debug.Log("Start");
     }
     
     public void Move(Vector2 moveAmount, Vector2 input) {
