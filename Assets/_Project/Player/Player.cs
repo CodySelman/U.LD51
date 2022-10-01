@@ -55,8 +55,9 @@ public enum ActorAnimationState
 
                 // gun & sprite renderer
                 Vector3 pos = transform.position;
+                Vector3 gunPos = gun.transform.position;
                 Vector3 reticlePos = Reticle.Instance.transform.position;
-                float gunAngle = Mathf.Atan2(pos.y - reticlePos.y, pos.x - reticlePos.x) * Mathf.Rad2Deg;
+                float gunAngle = Mathf.Atan2(gunPos.y - reticlePos.y, gunPos.x - reticlePos.x) * Mathf.Rad2Deg;
 
                 if (reticlePos.x >= pos.x) {
                     sr.flipX = true;
