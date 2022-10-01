@@ -6,7 +6,7 @@ namespace CodTools.Utilities
 {
     public static class RandomUtils
     {
-       public static List<T> Shuffle<T>(List<T> t) {
+        public static List<T> Shuffle<T>(List<T> t) {
             // Loops through array
             for (int i = t.Count - 1; i > 0; i--)
             {
@@ -23,6 +23,22 @@ namespace CodTools.Utilities
 
         public static T GetRandomItem<T>(List<T> list) {
             return list[UnityEngine.Random.Range(0, list.Count)];
+        }
+        
+        public static Vector3 GetNoiseAngle(float min, float max) {
+            return new Vector3(
+                UnityEngine.Random.Range(min, max),
+                UnityEngine.Random.Range(min, max),
+                UnityEngine.Random.Range(min, max)
+            );
+        }
+        
+        public static Vector3 GetNoiseAngle2d(float min, float max) {
+            return new Vector3(
+                UnityEngine.Random.Range(min, max),
+                UnityEngine.Random.Range(min, max),
+                0
+            );
         }
     }
 }

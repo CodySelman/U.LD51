@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum ActorAnimationState
 {
@@ -22,12 +23,14 @@ public enum ActorAnimationState
         [SerializeField] SpriteRenderer sr;
         [SerializeField] Animator animator;
         [SerializeField] TopdownController2d topdownController;
+        [SerializeField] PlayerGun gun;
         [SerializeField] SpriteRenderer gunSr;
 
         // variables
         [SerializeField] int healthMax = 3;
         [SerializeField] int health = 3;
         [SerializeField] float moveSpeed = 5f;
+        [SerializeField] bool isAlive = true;
 
         Vector2 _inputVec = Vector2.zero;
         ActorAnimationState _animState = ActorAnimationState.Idle;
@@ -37,33 +40,42 @@ public enum ActorAnimationState
         }
 
         void Update() {
-            // is alive?
-            _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-            if (_inputVec.magnitude > 0.1f) {
-                if (_animState != ActorAnimationState.Walking) {
-                    ChangeAnimationState(ActorAnimationState.Walking);
+            if (isAlive) {
+                // movement
+                _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+                if (_inputVec.magnitude > 0.1f) {
+                    if (_animState != ActorAnimationState.Walking) {
+                        ChangeAnimationState(ActorAnimationState.Walking);
+                    }
+                    Vector2 moveVec = _inputVec * (moveSpeed * Time.deltaTime);
+                    topdownController.Move(moveVec, _inputVec);
+                } else if (_animState != ActorAnimationState.Idle) {
+                    ChangeAnimationState(ActorAnimationState.Idle);
                 }
-                Vector2 moveVec = _inputVec * (moveSpeed * Time.deltaTime);
-                topdownController.Move(moveVec, _inputVec);
-            } else if (_animState != ActorAnimationState.Idle) {
-                ChangeAnimationState(ActorAnimationState.Idle);
-            }
 
-            Vector3 pos = transform.position;
-            Vector3 reticlePos = Reticle.Instance.transform.position;
-            float gunAngle = Mathf.Atan2(pos.y - reticlePos.y, pos.x - reticlePos.x) * Mathf.Rad2Deg;
+                // gun & sprite renderer
+                Vector3 pos = transform.position;
+                Vector3 reticlePos = Reticle.Instance.transform.position;
+                float gunAngle = Mathf.Atan2(pos.y - reticlePos.y, pos.x - reticlePos.x) * Mathf.Rad2Deg;
 
-            if (reticlePos.x >= pos.x) {
-                sr.flipX = true;
-                gunSr.flipX = true;
-                gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle + 180));
-            }
-            else {
-                sr.flipX = false;
-                gunSr.flipX = false;
-                gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle));
-            }
+                if (reticlePos.x >= pos.x) {
+                    sr.flipX = true;
+                    gunSr.flipX = true;
+                    gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle + 180));
+                }
+                else {
+                    sr.flipX = false;
+                    gunSr.flipX = false;
+                    gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle));
+                }
 
+                if (Input.GetMouseButtonDown(0)) {
+                    gun.Shoot();
+                }
+                else if (Input.GetKeyDown(KeyCode.R)) {
+                    gun.Reload();
+                }   
+            }
         }
 
         void ChangeAnimationState(ActorAnimationState newState) {

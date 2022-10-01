@@ -404,6 +404,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 231077106, guid: 9a0fe3d59e167ef47ac07b4081fc2fb5, type: 3}
+      propertyPath: clipSize
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 231077106, guid: 9a0fe3d59e167ef47ac07b4081fc2fb5, type: 3}
+      propertyPath: spreadBase
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 231077106, guid: 9a0fe3d59e167ef47ac07b4081fc2fb5, type: 3}
+      propertyPath: clipSizeBase
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7486883204500281430, guid: 9a0fe3d59e167ef47ac07b4081fc2fb5, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -953,11 +965,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5810813401025602337, guid: bab1703f358291e4aa45a805e4def1e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.1150155
+      value: -4.97
       objectReference: {fileID: 0}
     - target: {fileID: 5810813401025602337, guid: bab1703f358291e4aa45a805e4def1e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.35476032
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5810813401025602337, guid: bab1703f358291e4aa45a805e4def1e3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -993,7 +1005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5810813401025602339, guid: bab1703f358291e4aa45a805e4def1e3, type: 3}
       propertyPath: m_Name
-      value: Cursor
+      value: Reticle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bab1703f358291e4aa45a805e4def1e3, type: 3}

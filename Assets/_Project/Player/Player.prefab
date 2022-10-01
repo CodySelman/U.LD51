@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 231077103}
   - component: {fileID: 231077104}
+  - component: {fileID: 231077106}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -84,6 +85,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &231077106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231077102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6df28227f064640b36cd465230c34c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 2379212498509712265, guid: 7a9b79cb561dfd141ab8061628ae063b, type: 3}
+  speedBase: 5
+  speedMod: 1
+  speed: 5
+  sizeBase: 1
+  sizeMod: 1
+  size: 1
+  damageBase: 1
+  damageMod: 1
+  damage: 1
+  clipSizeBase: 6
+  clipSizeMod: 1
+  clipSize: 6
+  fireRateBase: 3
+  fireRateMod: 1
+  fireRate: 3
+  reloadTimeBase: 1.5
+  reloadTimeMod: 1
+  reloadTime: 1.5
+  spreadBase: 1
+  spreadMod: 1
+  spread: 0.1
+  lifetimeBase: 1
+  lifetimeMod: 1
+  lifetime: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,10 +434,12 @@ MonoBehaviour:
   sr: {fileID: 7486883202991079518}
   animator: {fileID: 1078465836217536056}
   topdownController: {fileID: 7486883204500281425}
+  gun: {fileID: 231077106}
   gunSr: {fileID: 231077104}
   healthMax: 3
   health: 3
   moveSpeed: 5
+  isAlive: 1
 --- !u!114 &7486883204500281425
 MonoBehaviour:
   m_ObjectHideFlags: 0
