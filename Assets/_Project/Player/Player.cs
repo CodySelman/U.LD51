@@ -35,6 +35,7 @@ public enum ActorAnimationState
         [SerializeField] int healthMax = 3;
         [SerializeField] int health = 3;
         [SerializeField] float moveSpeed = 5f;
+        [SerializeField] float moveSpeedMod = 1f;
         [SerializeField] float respawnAnimLength = 0.4f;
         [SerializeField] float invincibilityTime = 0.5f;
 
@@ -65,7 +66,7 @@ public enum ActorAnimationState
                     if (_animState != ActorAnimationState.Walking) {
                         ChangeAnimationState(ActorAnimationState.Walking);
                     }
-                    Vector2 moveVec = _inputVec * (moveSpeed * Time.deltaTime);
+                    Vector2 moveVec = _inputVec * (moveSpeed * moveSpeedMod * Time.deltaTime);
                     topdownController.Move(moveVec, _inputVec);
                 } else if (_animState != ActorAnimationState.Idle) {
                     ChangeAnimationState(ActorAnimationState.Idle);
@@ -135,6 +136,10 @@ public enum ActorAnimationState
                 _isInvincible = true;
                 _invincibilityTimer = invincibilityTime;
             }
+        }
+
+        public void ChangeMoveSpeedMod(float changeAmount) {
+            moveSpeedMod += changeAmount;
         }
 
         void ResetStats() {
