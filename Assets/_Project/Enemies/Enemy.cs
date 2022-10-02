@@ -21,12 +21,7 @@ public class Enemy : MonoBehaviour
     Transform _shipTransform;
 
     void Start() {
-        health = healthMax;
-        
-        _player ??= GameManager.Instance.player;
-        _playerTransform ??= _player.transform;
-        _ship ??= GameManager.Instance.ship;
-        _shipTransform ??= _ship.transform;
+        Init();
     }
 
     void Update() {
@@ -70,6 +65,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Init() {
+        health = healthMax;
+        
+        _player ??= GameManager.Instance.player;
+        _playerTransform ??= _player.transform;
+        _ship ??= GameManager.Instance.ship;
+        _shipTransform ??= _ship.transform;
+    }
+
     void OnCollisionStay2D(Collision2D col) {
         if (GameManager.Instance.isGameOver) return;
         if (col.gameObject.CompareTag("Player")) {
@@ -94,8 +98,7 @@ public class Enemy : MonoBehaviour
     }
 
     void Die() {
-        // TODO pooling
-        // TODO animation
         gameObject.SetActive(false);
+        EnemySpawner.Instance.WolfPool.Return(this);
     }
 }

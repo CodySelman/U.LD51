@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 354275762052880195, guid: 7a5e7a16778cca747bd2288436e91900, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Wolf
       objectReference: {fileID: 0}
     - target: {fileID: 6914095888441995164, guid: 7a5e7a16778cca747bd2288436e91900, type: 3}
       propertyPath: m_RootOrder
@@ -54,6 +54,14 @@ PrefabInstance:
     - target: {fileID: 6914095888441995164, guid: 7a5e7a16778cca747bd2288436e91900, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8469729350677504709, guid: 7a5e7a16778cca747bd2288436e91900, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8469729350677504709, guid: 7a5e7a16778cca747bd2288436e91900, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -700720015
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a5e7a16778cca747bd2288436e91900, type: 3}

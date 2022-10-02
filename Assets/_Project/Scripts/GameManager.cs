@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text gameOverHeading;
     [SerializeField] TMP_Text gameOverBody;
 
-    [SerializeField] Enemy wolfPrefab;
-
     [SerializeField] float gameMinutesMax = 10f;
 
     const string GameLoseHeading = "Mission Failure";
@@ -28,8 +26,6 @@ public class GameManager : MonoBehaviour
     const string GameWinBody = "Sufficient material gathered to fully repair ship. Engaging weapon systems to eradicate native life. Mission control has offered the following choices for next mission:";
     float _gameSecondsRemaining;
     int _prevSecondsRemaining;
-    
-    ObjectPool<Enemy> _wolfPool;
 
     void Awake() {
         // singleton setup
@@ -43,7 +39,6 @@ public class GameManager : MonoBehaviour
     void Start() {
         gameOverPanel.SetActive(false);
         _gameSecondsRemaining = gameMinutesMax * 60;
-        _wolfPool = new(wolfPrefab, 10, transform);
     }
 
     void Update() {
