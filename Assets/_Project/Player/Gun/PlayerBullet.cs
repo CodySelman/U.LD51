@@ -14,6 +14,8 @@ public class PlayerBullet : MonoBehaviour
     Vector3 _direction;
 
     void Update() {
+        if (GameManager.Instance.isGameOver) return;
+        
         float delta = Time.deltaTime;
         transform.Translate(  (_direction + _spread) * (_speed * delta));
         _lifetime -= delta;
@@ -25,6 +27,8 @@ public class PlayerBullet : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+        if (GameManager.Instance.isGameOver) return;
+        
         if (other.CompareTag("Enemy")) {
             other.GetComponent<Enemy>().GetHit(_damage);
             _myPool.Return(this);

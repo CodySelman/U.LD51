@@ -31,6 +31,8 @@ public class Ship : MonoBehaviour
     }
 
     void Update() {
+        if (GameManager.Instance.isGameOver) return;
+        
         if (_isInvincible) {
             _invincibilityTimer -= Time.deltaTime;
             if (_invincibilityTimer <= 0f) {
@@ -51,7 +53,7 @@ public class Ship : MonoBehaviour
         EvShipHealthChanged e = new (health, healthMax);
         EventManager.instance.Raise(e);
         if (health <= 0) {
-            // TODO game over
+            GameManager.Instance.GameOver();
         }
     }
 

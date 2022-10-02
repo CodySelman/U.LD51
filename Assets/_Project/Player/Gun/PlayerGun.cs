@@ -76,6 +76,8 @@ public class PlayerGun : MonoBehaviour
     }
 
     void Update() {
+        if (GameManager.Instance.isGameOver) return;
+        
         if (_isShotCooldown) {
             _shotTimer -= Time.deltaTime;
             

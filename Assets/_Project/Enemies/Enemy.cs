@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour
     }
 
     void Update() {
+        if (GameManager.Instance.isGameOver) return;
+        
         Vector3 pos = transform.position;
         Vector3 playerPos = _playerTransform.position;
         Vector3 shipPos = _shipTransform.position;
@@ -69,6 +71,7 @@ public class Enemy : MonoBehaviour
     }
 
     void OnCollisionStay2D(Collision2D col) {
+        if (GameManager.Instance.isGameOver) return;
         if (col.gameObject.CompareTag("Player")) {
             Player p = col.gameObject.GetComponent<Player>();
             p.GetHit();

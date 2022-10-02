@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using CodTools.Utilities;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,12 +12,20 @@ public class GameManager : MonoBehaviour
 
     public Player player;
     public Ship ship;
+    public bool isGameOver = false;
     [SerializeField] TMP_Text gameTimeRemainingText;
+    [SerializeField] GameObject gameOverPanel;
+    [SerializeField] TMP_Text gameOverHeading;
+    [SerializeField] TMP_Text gameOverBody;
 
     [SerializeField] Enemy wolfPrefab;
 
     [SerializeField] float gameMinutesMax = 10f;
 
+    const string GameLoseHeading = "Mission Failure";
+    const string GameLoseBody = "Probability of repair: 0%. Hostile native life proved to be insurmountable. Initiating self-destruct. Mission Control has offered the following choices for next mission:";
+    const string GameWinHeading = "Mission Success";
+    const string GameWinBody = "Sufficient material gathered to fully repair ship. Engaging weapon systems to eradicate native life. Mission control has offered the following choices for next mission:";
     float _gameSecondsRemaining;
     int _prevSecondsRemaining;
     
@@ -32,17 +41,44 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
+        gameOverPanel.SetActive(false);
         _gameSecondsRemaining = gameMinutesMax * 60;
         _wolfPool = new(wolfPrefab, 10, transform);
     }
 
     void Update() {
-        _gameSecondsRemaining -= Time.deltaTime;
-        SetGameTime();
-        
-        if (_gameSecondsRemaining <= 0f) {
-            // TODO win!!!
+        if (!isGameOver) {
+            _gameSecondsRemaining -= Time.deltaTime;
+            SetGameTime();
+            
+            if (_gameSecondsRemaining <= 0f) {
+                GameWin();
+            }
         }
+    }
+
+    public void QuitGame() {
+        Application.Quit();
+    }
+
+    public void Restart() {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void GameOver() {
+        isGameOver = true;
+        Reticle.Instance.SetVisible(false);
+        gameOverPanel.SetActive(true);
+        gameOverHeading.text = GameLoseHeading;
+        gameOverBody.text = GameLoseBody;
+    }
+
+    void GameWin() {
+        isGameOver = true;
+        Reticle.Instance.SetVisible(false);
+        gameOverPanel.SetActive(true);
+        gameOverHeading.text = GameWinHeading;
+        gameOverBody.text = GameWinBody;
     }
 
     void SetGameTime() {

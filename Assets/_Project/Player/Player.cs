@@ -56,6 +56,8 @@ public enum ActorAnimationState
         }
 
         void Update() {
+            if (GameManager.Instance.isGameOver) return;
+            
             if (isAlive && !_isRespawning) {
                 // movement
                 _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
