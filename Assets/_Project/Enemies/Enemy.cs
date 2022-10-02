@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D col) {
+    void OnCollisionStay2D(Collision2D col) {
         if (col.gameObject.CompareTag("Player")) {
             Player p = col.gameObject.GetComponent<Player>();
             p.GetHit();
