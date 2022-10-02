@@ -206,7 +206,7 @@ public class PlayerGun : MonoBehaviour
         SetSpread();
     }
     public void ChangeSpreadMod(float changeAmount) {
-        spreadMod = Mathf.Max(0.1f, spreadMod + changeAmount);
+        spreadMod = Mathf.Max(0, spreadMod + changeAmount);
         SetSpread();
     }
     void SetSpread() {

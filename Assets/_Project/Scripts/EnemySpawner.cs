@@ -21,9 +21,9 @@ public class EnemySpawner : MonoBehaviour
     
     List<Vector3> spawnPositions = new();
 
-    float _spawnRate;
-    float _spawnRateIncreaseTimer;
-    float _spawnTimer;
+    [SerializeField] float spawnRate;
+    [SerializeField] float spawnRateIncreaseTimer;
+    [SerializeField] float spawnTimer;
 
     void Awake() {
         // singleton setup
@@ -35,9 +35,9 @@ public class EnemySpawner : MonoBehaviour
     }
     
     void Start() {
-        _spawnRate = spawnRateInitial;
-        _spawnRateIncreaseTimer = spawnRateIncreaseTime;
-        _spawnTimer = _spawnRate;
+        spawnRate = spawnRateInitial;
+        spawnRateIncreaseTimer = spawnRateIncreaseTime;
+        spawnTimer = spawnRate;
         
         foreach (Transform t in spawnTransforms) {
             spawnPositions.Add(t.position);
@@ -51,17 +51,17 @@ public class EnemySpawner : MonoBehaviour
     void Update() {
         if (GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
         float delta = Time.deltaTime;
-        _spawnTimer -= delta;
-        _spawnRateIncreaseTimer -= delta;
+        spawnTimer -= delta;
+        spawnRateIncreaseTimer -= delta;
         
-        if (_spawnTimer <= 0) {
+        if (spawnTimer <= 0) {
             SpawnWolfRandom();
-            _spawnTimer = _spawnRate;
+            spawnTimer = spawnRate;
         }
 
-        if (_spawnRateIncreaseTimer <= 0) {
-            _spawnRate -= spawnRateIncreaseRate;
-            _spawnRateIncreaseTimer = spawnRateIncreaseTime;
+        if (spawnRateIncreaseTimer <= 0) {
+            spawnRate -= spawnRateIncreaseRate;
+            spawnRateIncreaseTimer = spawnRateIncreaseTime;
         }
     }
 

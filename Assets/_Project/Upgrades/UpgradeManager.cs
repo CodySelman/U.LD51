@@ -20,8 +20,8 @@ public class UpgradeManager : MonoBehaviour
 
     public bool isUpgrading = false;
 
-    int _level = 1;
-    int _xpRequiredForLevel = 3;
+    [SerializeField] int level = 1;
+    [SerializeField] int xpRequiredForLevel = 2;
     int _currentXp = 0;
     List<UpgradeSo> _currentUpgrades = new();
     
@@ -50,7 +50,7 @@ public class UpgradeManager : MonoBehaviour
     void OnXpPickedUp(EvXpPickedUp e) {
         _currentXp++;
         SetXpText();
-        if (_currentXp >= _xpRequiredForLevel) {
+        if (_currentXp >= xpRequiredForLevel) {
             LevelUp();
         }
     }
@@ -116,9 +116,9 @@ public class UpgradeManager : MonoBehaviour
     }
 
     void LevelUp() {
-        _level++;
+        level++;
         _currentXp = 0;
-        _xpRequiredForLevel = _level * xpIncreaseRate;
+        xpRequiredForLevel = level * xpIncreaseRate;
         SetXpText();
         isUpgrading = true;
         OpenUpgradePanel();
@@ -140,6 +140,6 @@ public class UpgradeManager : MonoBehaviour
     }
 
     void SetXpText() {
-        xPText.text = $"{_currentXp}/{_xpRequiredForLevel}";
+        xPText.text = $"{_currentXp}/{xpRequiredForLevel}";
     }
 }
