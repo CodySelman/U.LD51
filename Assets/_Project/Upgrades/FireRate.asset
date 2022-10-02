@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FireRate
   m_EditorClassIdentifier: 
   upgradeType: 5
-  amount: 0.2
-  description: Increase fire rate by 20%
+  amount: 0.3
+  description: Increase fire rate by 30%

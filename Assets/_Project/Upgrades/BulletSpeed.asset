@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BulletSpeed
   m_EditorClassIdentifier: 
   upgradeType: 1
-  amount: 0.2
-  description: Increase bullet speed by 20%
+  amount: 0.3
+  description: Increase bullet speed by 30%

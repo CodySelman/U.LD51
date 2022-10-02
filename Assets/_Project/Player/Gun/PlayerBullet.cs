@@ -12,6 +12,7 @@ public class PlayerBullet : MonoBehaviour
     float _lifetime;
     Vector3 _spread;
     Vector3 _direction;
+    int _pierce;
 
     void Update() {
         if (GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
@@ -31,17 +32,23 @@ public class PlayerBullet : MonoBehaviour
         
         if (other.CompareTag("Enemy")) {
             other.GetComponent<Enemy>().GetHit(_damage);
-            _myPool.Return(this);
+            if (_pierce > 0) {
+                _pierce -= 1;
+            }
+            else {
+                _myPool.Return(this);
+            }
         }
     }
 
-    public void Init(ObjectPool<PlayerBullet> myPool, float speed, float size, int damage, float lifetime, float spread, Vector3 direction) {
+    public void Init(ObjectPool<PlayerBullet> myPool, float speed, float size, int damage, float lifetime, float spread, Vector3 direction, int pierce) {
         _myPool = myPool;
         _speed = speed;
         _damage = damage;
         _lifetime = lifetime;
         _spread = RandomUtils.GetNoiseAngle2d(-spread, spread);
         _direction = direction;
+        _pierce = pierce;
 
         gameObject.SetActive(true);
         Transform myTrans = transform;

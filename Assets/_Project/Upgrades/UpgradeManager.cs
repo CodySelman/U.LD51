@@ -102,6 +102,9 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeType.ShipHealthMax:
                 GameManager.Instance.ship.IncreaseHealthMax(Mathf.FloorToInt(upgrade.amount));
                 break;
+            case UpgradeType.BulletPierce:
+                GameManager.Instance.player.gun.ChangePierceMod(Mathf.FloorToInt(upgrade.amount));
+                break;
             default:
                 Debug.LogError($"Bad UpgradeType passed: {upgrade.upgradeType}");
                 break;

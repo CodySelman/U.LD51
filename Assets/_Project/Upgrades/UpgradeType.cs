@@ -11,4 +11,5 @@ public enum UpgradeType
     PlayerMoveSpeed = 8,
     ShipHealth = 9,
     ShipHealthMax = 10,
+    BulletPierce = 11,
 }

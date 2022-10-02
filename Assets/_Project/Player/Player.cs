@@ -95,8 +95,8 @@ public enum ActorAnimationState
                         _isInvincible = false;
                     }
                 }
-
-                if (Input.GetMouseButtonDown(0)) {
+                
+                if (Input.GetMouseButton(0)) {
                     gun.Shoot();
                 }
                 else if (Input.GetKeyDown(KeyCode.R)) {

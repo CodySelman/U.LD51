@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BulletSize
   m_EditorClassIdentifier: 
   upgradeType: 2
-  amount: 0.2
-  description: Increase bullet size by 20%
+  amount: 0.5
+  description: Increase bullet size by 50%

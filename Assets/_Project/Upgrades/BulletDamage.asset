@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BulletDamage
   m_EditorClassIdentifier: 
   upgradeType: 3
-  amount: 0.2
-  description: Increase bullet damage by 20%
+  amount: 0.3
+  description: Increase bullet damage by 30%

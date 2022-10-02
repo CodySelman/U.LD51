@@ -43,6 +43,10 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] float lifetimeBase = 1f;
     [SerializeField] float lifetimeMod = 1f;
     [SerializeField] float lifetime = 1f;
+
+    [SerializeField] int pierceBase = 0;
+    [SerializeField] int pierceMod = 0;
+    [SerializeField] int pierce = 0;
     
     ObjectPool<PlayerBullet> _pool;
     int _currentAmmo;
@@ -63,7 +67,8 @@ public class PlayerGun : MonoBehaviour
         SetFireRate();    
         SetReloadTime();
         SetSpread();
-        SetLifetime();    
+        SetLifetime();
+        SetPierce();
         
         _currentAmmo = clipSize;
         // update UI
@@ -102,7 +107,7 @@ public class PlayerGun : MonoBehaviour
             Vector3 bulletSpawnPos = sr.flipX ? bulletSpawnFlipTransform.position : bulletSpawnTransform.position;
             Vector3 dir =  (reticlePos - bulletSpawnPos).normalized;
             bullet.transform.position = bulletSpawnPos;
-            bullet.Init(_pool, speed, size, damage, lifetime, spread, dir);
+            bullet.Init(_pool, speed, size, damage, lifetime, spread, dir, pierce);
             _currentAmmo -= 1;
             EvAmmoChanged e = new (_currentAmmo, clipSize);
             EventManager.instance.Raise(e);
@@ -230,5 +235,14 @@ public class PlayerGun : MonoBehaviour
     }
     void SetFireRate() {
         fireRate = fireRateBase * fireRateMod;
+    }
+
+    public void ChangePierceMod(int amount) {
+        pierceMod += amount;
+        SetPierce();
+    }
+
+    public void SetPierce() {
+        pierce = pierceBase = pierceMod;
     }
 }

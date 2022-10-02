@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerMoveSpeed
   m_EditorClassIdentifier: 
   upgradeType: 8
-  amount: 0.2
-  description: Increase move speed by 20%
+  amount: 0.25
+  description: Increase move speed by 25%
