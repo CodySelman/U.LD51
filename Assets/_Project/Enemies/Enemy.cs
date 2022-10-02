@@ -56,8 +56,21 @@ public class Enemy : MonoBehaviour
     }
 
     void Move(Vector2 inputVec) {
-        // inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         Vector2 moveVec = inputVec * (moveSpeed * Time.deltaTime);
         topdownController.Move(moveVec, inputVec);
+    }
+
+    public void GetHit(int damage) {
+        // TODO animation
+        health -= damage;
+        if (health <= 0) {
+            Die();
+        }
+    }
+
+    void Die() {
+        // TODO pooling
+        // TODO animation
+        gameObject.SetActive(false);
     }
 }

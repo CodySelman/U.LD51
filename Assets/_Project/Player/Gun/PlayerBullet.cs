@@ -29,8 +29,11 @@ public class PlayerBullet : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other) {
-        // hit stuff
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Enemy")) {
+            other.GetComponent<Enemy>().GetHit(_damage);
+            _myPool.Return(this);
+        }
     }
 
     public void Init(ObjectPool<PlayerBullet> myPool, float speed, float size, int damage, float lifetime, float spread, bool isFlipped) {
