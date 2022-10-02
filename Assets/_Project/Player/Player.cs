@@ -27,6 +27,7 @@ public enum ActorAnimationState
         [SerializeField] Animator animator;
         [SerializeField] TopdownController2d topdownController;
         [SerializeField] PlayerGun gun;
+        [SerializeField] Transform bulletSpawnTransform;
         [SerializeField] SpriteRenderer gunSr;
         [SerializeField] DeadPlayer deadPlayerPrefab;
 
@@ -73,7 +74,7 @@ public enum ActorAnimationState
                 Vector3 gunPos = gun.transform.position;
                 Vector3 reticlePos = Reticle.Instance.transform.position;
                 float gunAngle = Mathf.Atan2(gunPos.y - reticlePos.y, gunPos.x - reticlePos.x) * Mathf.Rad2Deg;
-
+                
                 if (reticlePos.x >= pos.x) {
                     sr.flipX = true;
                     gunSr.flipX = true;

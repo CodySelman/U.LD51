@@ -11,16 +11,11 @@ public class PlayerBullet : MonoBehaviour
     int _damage;
     float _lifetime;
     Vector3 _spread;
-    bool _isFlipped;
+    Vector3 _direction;
 
     void Update() {
         float delta = Time.deltaTime;
-        if (_isFlipped) {
-            transform.Translate(  (transform.right + _spread) * (_speed * delta));
-        }
-        else {
-            transform.Translate(  (transform.right * -1 + _spread) * (_speed * delta));
-        }
+        transform.Translate(  (_direction + _spread) * (_speed * delta));
         _lifetime -= delta;
 
         if (_lifetime <= 0) {
@@ -36,16 +31,17 @@ public class PlayerBullet : MonoBehaviour
         }
     }
 
-    public void Init(ObjectPool<PlayerBullet> myPool, float speed, float size, int damage, float lifetime, float spread, bool isFlipped) {
+    public void Init(ObjectPool<PlayerBullet> myPool, float speed, float size, int damage, float lifetime, float spread, Vector3 direction) {
         _myPool = myPool;
         _speed = speed;
         _damage = damage;
         _lifetime = lifetime;
         _spread = RandomUtils.GetNoiseAngle2d(-spread, spread);
-        _isFlipped = isFlipped;
-        
+        _direction = direction;
+
         gameObject.SetActive(true);
         Transform myTrans = transform;
+        myTrans.rotation = Quaternion.identity;
         myTrans.parent = null;
         myTrans.localScale = new Vector3(size, size, size);
     }

@@ -42,6 +42,8 @@ public class Ship : MonoBehaviour
     public void GetHit() {
         if (_isInvincible) return;
         SetHealth(health - 1);
+        _isInvincible = true;
+        _invincibilityTimer = invincibilityTime;
     }
 
     void SetHealth(int newHealth) {

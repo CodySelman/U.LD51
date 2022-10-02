@@ -6,9 +6,11 @@ using CodTools.Utilities;
 
 public class PlayerGun : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer sr;
     [SerializeField] PlayerBullet bulletPrefab;
     [SerializeField] Animator reloadBarAnim;
     [SerializeField] Transform bulletSpawnTransform;
+    [SerializeField] Transform bulletSpawnFlipTransform;
     
     [SerializeField] float speedBase = 5f;
     [SerializeField] float speedMod = 1f;
@@ -93,8 +95,12 @@ public class PlayerGun : MonoBehaviour
     public void Shoot() {
         if (!_isReloading && !_isShotCooldown) {
             PlayerBullet bullet = _pool.Get();
-            bullet.transform.position = bulletSpawnTransform.position;
-            bullet.Init(_pool, speed, size, damage, lifetime, spread, Reticle.Instance.transform.position.x >= transform.position.x);
+            Transform t = transform;
+            Vector3 reticlePos = Reticle.Instance.transform.position;
+            Vector3 bulletSpawnPos = sr.flipX ? bulletSpawnFlipTransform.position : bulletSpawnTransform.position;
+            Vector3 dir =  (reticlePos - bulletSpawnPos).normalized;
+            bullet.transform.position = bulletSpawnPos;
+            bullet.Init(_pool, speed, size, damage, lifetime, spread, dir);
             _currentAmmo -= 1;
             EvAmmoChanged e = new (_currentAmmo, clipSize);
             EventManager.instance.Raise(e);
