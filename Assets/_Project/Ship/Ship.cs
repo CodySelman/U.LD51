@@ -57,7 +57,7 @@ public class Ship : MonoBehaviour
     }
 
     void SetHealth(int newHealth) {
-        health = newHealth;
+        health = Mathf.Min(newHealth, healthMax);
         EvShipHealthChanged e = new (health, healthMax);
         EventManager.instance.Raise(e);
         if (health <= 0) {
