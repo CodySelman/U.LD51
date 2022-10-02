@@ -11,9 +11,8 @@ public class XpDrop : MonoBehaviour
         _e = new EvXpPickedUp();
     }
 
-    void OnCollisionEnter2D(Collision2D col) {
+    void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.CompareTag("Player")) {
-            Debug.Log("xp pickup");
             EventManager.instance.Raise(_e);
             EnemySpawner.Instance.XpPool.Return(this);
         }
