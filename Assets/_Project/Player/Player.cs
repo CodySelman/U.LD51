@@ -100,7 +100,7 @@ public enum ActorAnimationState
                     gun.Shoot();
                 }
                 else if (Input.GetKeyDown(KeyCode.R)) {
-                    gun.Reload();
+                    gun.StartReload();
                 }
             }
             
