@@ -14,7 +14,7 @@ public class PlayerBullet : MonoBehaviour
     Vector3 _direction;
 
     void Update() {
-        if (GameManager.Instance.isGameOver) return;
+        if (GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
         
         float delta = Time.deltaTime;
         transform.Translate(  (_direction + _spread) * (_speed * delta));
