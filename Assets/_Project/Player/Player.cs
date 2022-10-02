@@ -127,6 +127,7 @@ public enum ActorAnimationState
         public void GetHit() {
             if (_isInvincible || !isAlive || _isRespawning) return;
 
+            SoundManager.Instance.PlayerHurt();
             SetHealth(health - 1);
 
             if (health <= 0) {

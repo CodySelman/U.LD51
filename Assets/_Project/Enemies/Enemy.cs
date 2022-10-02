@@ -90,10 +90,13 @@ public class Enemy : MonoBehaviour
     }
 
     public void GetHit(int damage) {
-        // TODO animation
         health -= damage;
         if (health <= 0) {
+            SoundManager.Instance.EnemyDead();
             Die();
+        }
+        else {
+            SoundManager.Instance.EnemyHurt();
         }
     }
 

@@ -48,6 +48,7 @@ public class UpgradeManager : MonoBehaviour
     }
 
     void OnXpPickedUp(EvXpPickedUp e) {
+        SoundManager.Instance.XpPickup();
         _currentXp++;
         SetXpText();
         if (_currentXp >= xpRequiredForLevel) {
@@ -101,6 +102,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
             case UpgradeType.ShipHealthMax:
                 GameManager.Instance.ship.IncreaseHealthMax(Mathf.FloorToInt(upgrade.amount));
+                GameManager.Instance.ship.RecoverHealth(Mathf.FloorToInt(upgrade.amount));
                 break;
             case UpgradeType.BulletPierce:
                 GameManager.Instance.player.gun.ChangePierceMod(Mathf.FloorToInt(upgrade.amount));
@@ -116,6 +118,7 @@ public class UpgradeManager : MonoBehaviour
     }
 
     void LevelUp() {
+        SoundManager.Instance.LevelUp();
         level++;
         _currentXp = 0;
         xpRequiredForLevel = level * xpIncreaseRate;

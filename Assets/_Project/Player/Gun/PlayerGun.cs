@@ -101,6 +101,7 @@ public class PlayerGun : MonoBehaviour
 
     public void Shoot() {
         if (!_isReloading && !_isShotCooldown) {
+            SoundManager.Instance.Shoot();
             PlayerBullet bullet = _pool.Get();
             Transform t = transform;
             Vector3 reticlePos = Reticle.Instance.transform.position;

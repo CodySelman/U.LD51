@@ -31,7 +31,7 @@ public class Ship : MonoBehaviour
     }
 
     void Update() {
-        if (GameManager.Instance.isGameOver) return;
+        if (GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
         
         if (_isInvincible) {
             _invincibilityTimer -= Time.deltaTime;
@@ -42,7 +42,8 @@ public class Ship : MonoBehaviour
     }
 
     public void GetHit() {
-        if (_isInvincible) return;
+        if (_isInvincible || GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
+        SoundManager.Instance.BaseHurt();
         SetHealth(health - 1);
         _isInvincible = true;
         _invincibilityTimer = invincibilityTime;

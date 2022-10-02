@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver() {
+        SoundManager.Instance.GameLost();
         isGameOver = true;
         Reticle.Instance.SetVisible(false);
         gameOverPanel.SetActive(true);
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour
     }
 
     void GameWin() {
+        SoundManager.Instance.GameWon();
         isGameOver = true;
         Reticle.Instance.SetVisible(false);
         gameOverPanel.SetActive(true);
