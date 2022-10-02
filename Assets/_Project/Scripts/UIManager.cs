@@ -12,13 +12,19 @@ public class UIManager : MonoBehaviour
 
     void OnEnable() {
         EventManager.instance.AddListener<EvAmmoChanged>(OnAmmoChanged);
+        EventManager.instance.AddListener<EvBatteryChanged>(OnBatteryChanged);
     }
 
     void OnDisable() {
         EventManager.instance.RemoveListener<EvAmmoChanged>(OnAmmoChanged);
+        EventManager.instance.RemoveListener<EvBatteryChanged>(OnBatteryChanged);
     }
 
     void OnAmmoChanged(EvAmmoChanged e) {
         bulletText.text = $"{e.Ammo}/{e.AmmoMax}";
+    }
+
+    void OnBatteryChanged(EvBatteryChanged e) {
+        batteryText.text = e.SecondsLeft.ToString();
     }
 }

@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     // components
     [SerializeField] TopdownController2d topdownController;
+    [SerializeField] SpriteRenderer sr;
     
     // variables
     [SerializeField] int healthMax = 3;
@@ -36,22 +37,43 @@ public class Enemy : MonoBehaviour
         float shipDist = Vector3.Distance(pos, shipPos);
         
         if (playerDist < shipDist) {
+            if (playerPos.x > pos.x) {
+                sr.flipX = false;
+            }
+            else {
+                sr.flipX = true;
+            }
             if (playerDist <= attackRange) {
                 // attack
             }
             else {
-                Vector2 inputVec = new Vector2(playerPos.x, playerPos.y) - new Vector2(pos.x, pos.y).normalized;
+                Vector2 inputVec = (new Vector2(playerPos.x, playerPos.y) - new Vector2(pos.x, pos.y)).normalized;
                 Move(inputVec);
             }
         }
         else {
+            if (shipPos.x > pos.x) {
+                sr.flipX = false;
+            }
+            else {
+                sr.flipX = true;
+            }
             if (shipDist <= attackRange) {
                 // attack
             }
             else {
-                Vector2 inputVec = new Vector2(shipPos.x, shipPos.y) - new Vector2(pos.x, pos.y).normalized;
+                Vector2 inputVec = (new Vector2(shipPos.x, shipPos.y) - new Vector2(pos.x, pos.y)).normalized;
                 Move(inputVec);
             }
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col) {
+        if (col.gameObject.CompareTag("Player")) {
+            Player p = col.gameObject.GetComponent<Player>();
+            p.GetHit();
+        } else if (col.gameObject.CompareTag("Base")) {
+            Ship.Instance.GetHit();
         }
     }
 

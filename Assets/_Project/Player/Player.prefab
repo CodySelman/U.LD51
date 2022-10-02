@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231077102}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7486883204500281430}
-  m_RootOrder: 1
+  m_Father: {fileID: 7486883202991079519}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &231077104
 SpriteRenderer:
@@ -155,7 +155,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7486883204500281430}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &519420031
 Camera:
@@ -259,7 +259,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7486883204500281430}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1541411910
 SpriteRenderer:
@@ -362,7 +362,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 231077103}
   m_Father: {fileID: 7486883204500281430}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -453,7 +454,7 @@ GameObject:
   - component: {fileID: 7486883204500281425}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -471,7 +472,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7486883202991079519}
-  - {fileID: 231077103}
   - {fileID: 519420032}
   - {fileID: 1541411909}
   m_Father: {fileID: 0}
@@ -543,10 +543,11 @@ MonoBehaviour:
   topdownController: {fileID: 7486883204500281425}
   gun: {fileID: 231077106}
   gunSr: {fileID: 231077104}
+  deadPlayerPrefab: {fileID: 4208061097876887695, guid: b5f858e847a2eac4aa314a6a0feff0ec, type: 3}
   healthMax: 3
   health: 3
   moveSpeed: 5
-  isAlive: 1
+  respawnAnimLength: 0.4
 --- !u!114 &7486883204500281425
 MonoBehaviour:
   m_ObjectHideFlags: 0

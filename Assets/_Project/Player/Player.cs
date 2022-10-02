@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using CodTools.Utilities;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,22 +27,34 @@ public enum ActorAnimationState
         [SerializeField] TopdownController2d topdownController;
         [SerializeField] PlayerGun gun;
         [SerializeField] SpriteRenderer gunSr;
+        [SerializeField] DeadPlayer deadPlayerPrefab;
 
         // variables
         [SerializeField] int healthMax = 3;
         [SerializeField] int health = 3;
         [SerializeField] float moveSpeed = 5f;
-        [SerializeField] bool isAlive = true;
+        [SerializeField] float respawnAnimLength = 0.4f;
+        [SerializeField] float invincibilityTime = 0.5f;
+
+        bool _isAlive = true;
+        bool _isRespawning;
+        float _respawnTimeRemaining = 0f;
+        float _batteryTimeMax = 10f;
+        float _batteryTime = 10f;
+        int _batterySecondsLeft = 10;
+        bool _isInvincible = false;
+        float _invincibilityTimer = 0f;
 
         Vector2 _inputVec = Vector2.zero;
         ActorAnimationState _animState = ActorAnimationState.Idle;
 
         void Start() {
-            health = healthMax;
+            ResetStats();
+            StartSpawn();
         }
 
         void Update() {
-            if (isAlive) {
+            if (_isAlive && !_isRespawning) {
                 // movement
                 _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
                 if (_inputVec.magnitude > 0.1f) {
@@ -70,13 +84,72 @@ public enum ActorAnimationState
                     gunSr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, gunAngle));
                 }
 
+                if (_isInvincible) {
+                    _invincibilityTimer -= Time.deltaTime;
+                    if (_invincibilityTimer <= 0f) {
+                        _isInvincible = false;
+                    }
+                }
+
                 if (Input.GetMouseButtonDown(0)) {
                     gun.Shoot();
                 }
                 else if (Input.GetKeyDown(KeyCode.R)) {
                     gun.Reload();
-                }   
+                }
             }
+            
+            _batteryTime -= Time.deltaTime;
+            int tempBatterySeconds = Mathf.CeilToInt(_batteryTime);
+            if (tempBatterySeconds != _batterySecondsLeft) {
+                SetBatterySecondsLeft(tempBatterySeconds);
+            }
+            if (_batteryTime <= 0 && !_isRespawning) {
+                if (_isAlive) {
+                    Die();
+                }
+                StartSpawn();
+            }
+
+            if (_isRespawning) {
+                _respawnTimeRemaining -= Time.deltaTime;
+                if (_respawnTimeRemaining <= 0f) {
+                    FinishSpawn();
+                }
+            }
+        }
+
+        public void GetHit() {
+            if (_isInvincible || !_isAlive || _isRespawning) return;
+
+            health -= 1;
+            _isInvincible = true;
+            _invincibilityTimer = invincibilityTime;
+        }
+
+        void ResetStats() {
+            health = healthMax;
+            _batteryTime = _batteryTimeMax;
+            SetBatterySecondsLeft(Mathf.CeilToInt(_batteryTime));
+        }
+
+        void StartSpawn() {
+            _isRespawning = true;
+            _respawnTimeRemaining = respawnAnimLength;
+            transform.position = Ship.Instance.playerSpawnPoint.position;
+            animator.Play("Spawn");
+        }
+
+        void FinishSpawn() {
+            ResetStats();
+            _isRespawning = false;
+            _isAlive = true;
+        }
+
+        void SetBatterySecondsLeft(int seconds) {
+            _batterySecondsLeft = seconds;
+            EvBatteryChanged e = new(_batterySecondsLeft);
+            EventManager.instance.Raise(e);
         }
 
         void ChangeAnimationState(ActorAnimationState newState) {
@@ -103,6 +176,13 @@ public enum ActorAnimationState
                     animator.Play("Idle");
                     break;
             }
+        }
+
+        void Die() {
+            _isAlive = false;
+            Transform t = transform;
+            DeadPlayer d = Instantiate(deadPlayerPrefab, t.position, deadPlayerPrefab.transform.rotation);
+            d.Init(sr.flipX);
         }
 
     }
