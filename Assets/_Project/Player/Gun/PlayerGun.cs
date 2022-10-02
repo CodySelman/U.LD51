@@ -8,6 +8,7 @@ public class PlayerGun : MonoBehaviour
 {
     [SerializeField] PlayerBullet bulletPrefab;
     [SerializeField] Animator reloadBarAnim;
+    [SerializeField] Transform bulletSpawnTransform;
     
     [SerializeField] float speedBase = 5f;
     [SerializeField] float speedMod = 1f;
@@ -92,6 +93,7 @@ public class PlayerGun : MonoBehaviour
     public void Shoot() {
         if (!_isReloading && !_isShotCooldown) {
             PlayerBullet bullet = _pool.Get();
+            bullet.transform.position = bulletSpawnTransform.position;
             bullet.Init(_pool, speed, size, damage, lifetime, spread, Reticle.Instance.transform.position.x >= transform.position.x);
             _currentAmmo -= 1;
             EvAmmoChanged e = new (_currentAmmo, clipSize);

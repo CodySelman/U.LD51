@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using UnityEngine;
 using UnityEngine.UI;
+using CodTools.Utilities;
 
 public class RobotHealthUI : MonoBehaviour
 {
@@ -26,12 +28,20 @@ public class RobotHealthUI : MonoBehaviour
         }
     }
 
+    void OnEnable() {
+        EventManager.instance.AddListener<EvPlayerHealthChanged>(OnPlayerHealthChange);
+    }
+
     void Start() {
         foreach (Transform child in heartContainer.transform) {
             Destroy(child.gameObject);
         }
         
         InitRender();
+    }
+
+    void OnDisable() {
+        EventManager.instance.RemoveListener<EvPlayerHealthChanged>(OnPlayerHealthChange);
     }
 
     void InitRender() {
@@ -44,6 +54,16 @@ public class RobotHealthUI : MonoBehaviour
             else {
                 heart.sprite = emptyHeartSprite;
             }
+        }
+    }
+
+    void OnPlayerHealthChange(EvPlayerHealthChanged e) {
+        if (e.HealthMax != _healthMax) {
+            OnHealthMaxChange(e.HealthMax);
+        }
+        
+        if (_health != e.Health) {
+            OnHealthChange(e.Health);
         }
     }
 

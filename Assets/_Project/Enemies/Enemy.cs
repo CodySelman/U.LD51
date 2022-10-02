@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
         float playerDist = Vector3.Distance(pos, playerPos);
         float shipDist = Vector3.Distance(pos, shipPos);
         
-        if (playerDist < shipDist) {
+        if (playerDist < shipDist && _player.isAlive) {
             if (playerPos.x > pos.x) {
                 sr.flipX = false;
             }

@@ -12,6 +12,7 @@ public enum ActorAnimationState
     Walking = 2,
     Death = 3,
     Attacking = 4,
+    Spawn = 5,
 }
 
 [RequireComponent((typeof(Rigidbody2D)))]
@@ -36,7 +37,7 @@ public enum ActorAnimationState
         [SerializeField] float respawnAnimLength = 0.4f;
         [SerializeField] float invincibilityTime = 0.5f;
 
-        bool _isAlive = true;
+        public bool isAlive = true;
         bool _isRespawning;
         float _respawnTimeRemaining = 0f;
         float _batteryTimeMax = 10f;
@@ -54,7 +55,7 @@ public enum ActorAnimationState
         }
 
         void Update() {
-            if (_isAlive && !_isRespawning) {
+            if (isAlive && !_isRespawning) {
                 // movement
                 _inputVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
                 if (_inputVec.magnitude > 0.1f) {
@@ -105,7 +106,7 @@ public enum ActorAnimationState
                 SetBatterySecondsLeft(tempBatterySeconds);
             }
             if (_batteryTime <= 0 && !_isRespawning) {
-                if (_isAlive) {
+                if (isAlive) {
                     Die();
                 }
                 StartSpawn();
@@ -120,30 +121,47 @@ public enum ActorAnimationState
         }
 
         public void GetHit() {
-            if (_isInvincible || !_isAlive || _isRespawning) return;
+            if (_isInvincible || !isAlive || _isRespawning) return;
 
-            health -= 1;
-            _isInvincible = true;
-            _invincibilityTimer = invincibilityTime;
+            SetHealth(health - 1);
+
+            if (health <= 0) {
+                Die();
+            }
+            else {
+                _isInvincible = true;
+                _invincibilityTimer = invincibilityTime;
+            }
         }
 
         void ResetStats() {
-            health = healthMax;
+            SetHealth(healthMax);
             _batteryTime = _batteryTimeMax;
             SetBatterySecondsLeft(Mathf.CeilToInt(_batteryTime));
         }
 
+        void SetHealth(int newHealth) {
+            health = newHealth;
+            EvPlayerHealthChanged e = new (health, healthMax);
+            EventManager.instance.Raise(e);
+        }
+
         void StartSpawn() {
             _isRespawning = true;
+            if (_animState == ActorAnimationState.Death) {
+                Transform t = transform;
+                DeadPlayer d = Instantiate(deadPlayerPrefab, t.position, deadPlayerPrefab.transform.rotation);
+                d.Init(sr.flipX);
+            }
             _respawnTimeRemaining = respawnAnimLength;
             transform.position = Ship.Instance.playerSpawnPoint.position;
-            animator.Play("Spawn");
+            ChangeAnimationState(ActorAnimationState.Spawn);
         }
 
         void FinishSpawn() {
             ResetStats();
             _isRespawning = false;
-            _isAlive = true;
+            isAlive = true;
         }
 
         void SetBatterySecondsLeft(int seconds) {
@@ -172,6 +190,9 @@ public enum ActorAnimationState
                 case ActorAnimationState.Death:
                     animator.Play("Death");
                     break;
+                case ActorAnimationState.Spawn:
+                    animator.Play("Spawn");
+                    break;
                 default:
                     animator.Play("Idle");
                     break;
@@ -179,10 +200,8 @@ public enum ActorAnimationState
         }
 
         void Die() {
-            _isAlive = false;
-            Transform t = transform;
-            DeadPlayer d = Instantiate(deadPlayerPrefab, t.position, deadPlayerPrefab.transform.rotation);
-            d.Init(sr.flipX);
+            isAlive = false;
+            ChangeAnimationState(ActorAnimationState.Death);
         }
 
     }
