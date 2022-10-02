@@ -98,6 +98,9 @@ public class Enemy : MonoBehaviour
     }
 
     void Die() {
+        XpDrop x = EnemySpawner.Instance.XpPool.Get();
+        x.gameObject.SetActive(true);
+        x.transform.position = transform.position;
         gameObject.SetActive(false);
         EnemySpawner.Instance.WolfPool.Return(this);
     }

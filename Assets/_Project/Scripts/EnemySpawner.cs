@@ -10,8 +10,10 @@ public class EnemySpawner : MonoBehaviour
     
     public List<Transform> spawnTransforms = new();
     public ObjectPool<Enemy> WolfPool;
+    public ObjectPool<XpDrop> XpPool;
 
     [SerializeField] Enemy wolfPrefab;
+    [SerializeField] XpDrop xpPrefab;
     
     List<Vector3> spawnPositions = new();
 
@@ -31,7 +33,10 @@ public class EnemySpawner : MonoBehaviour
         foreach (Transform t in spawnTransforms) {
             spawnPositions.Add(t.position);
         }
-        WolfPool = new(wolfPrefab, 10, transform);
+
+        Transform trans = transform;
+        WolfPool = new ObjectPool<Enemy>(wolfPrefab, 10, trans);
+        XpPool = new ObjectPool<XpDrop>(xpPrefab, 10, trans);
     }
 
     void Update() {
