@@ -7,6 +7,7 @@ using CodTools.Utilities;
 public class PlayerGun : MonoBehaviour
 {
     [SerializeField] PlayerBullet bulletPrefab;
+    [SerializeField] Animator reloadBarAnim;
     
     [SerializeField] float speedBase = 5f;
     [SerializeField] float speedMod = 1f;
@@ -45,6 +46,9 @@ public class PlayerGun : MonoBehaviour
     float _shotTimer = 0f;
     bool _isShotCooldown = false;
     bool _isReloading = false;
+    float _reloadTimeRemaining = 0f;
+    AnimationClip _reloadClip;
+    float _reloadClipLength;
 
     void Start() {
         _pool = new ObjectPool<PlayerBullet>(bulletPrefab, 10, transform);
@@ -59,6 +63,13 @@ public class PlayerGun : MonoBehaviour
         SetLifetime();    
         
         _currentAmmo = clipSize;
+        // update UI
+        EvAmmoChanged e = new (_currentAmmo, clipSize);
+        EventManager.instance.Raise(e);
+        
+        _reloadClip = reloadBarAnim.GetCurrentAnimatorClipInfo(0)[0].clip;
+        _reloadClipLength = _reloadClip.length;
+        reloadBarAnim.gameObject.SetActive(false);
     }
 
     void Update() {
@@ -69,6 +80,13 @@ public class PlayerGun : MonoBehaviour
                 _isShotCooldown = false;
             }
         }
+        
+        if (_isReloading) {
+            _reloadTimeRemaining -= Time.deltaTime;
+            if (_reloadTimeRemaining <= 0) {
+                Reload();
+            }
+        }
     }
 
     public void Shoot() {
@@ -76,8 +94,10 @@ public class PlayerGun : MonoBehaviour
             PlayerBullet bullet = _pool.Get();
             bullet.Init(_pool, speed, size, damage, lifetime, spread, Reticle.Instance.transform.position.x >= transform.position.x);
             _currentAmmo -= 1;
+            EvAmmoChanged e = new (_currentAmmo, clipSize);
+            EventManager.instance.Raise(e);
             if (_currentAmmo <= 0) {
-                Reload();
+                StartReload();
             }
             else {
                 _shotTimer = 1 / fireRate;
@@ -86,11 +106,22 @@ public class PlayerGun : MonoBehaviour
         }
     }
 
-    public void Reload() {
+    public void StartReload() {
         if (_currentAmmo < clipSize) {
             _isReloading = true;
-            // do reloading coroutine?
+            _reloadTimeRemaining = reloadTime;
+            reloadBarAnim.gameObject.SetActive(true);
+            reloadBarAnim.speed =  _reloadClipLength / reloadTime;
+            reloadBarAnim.Play("Reload");
         }
+    }
+
+    public void Reload() {
+        _isReloading = false;
+        reloadBarAnim.gameObject.SetActive(false);
+        _currentAmmo = clipSize;
+        EvAmmoChanged e = new (_currentAmmo, clipSize);
+        EventManager.instance.Raise(e);
     }
 
     public void ChangeSpeedBase(float changeAmount) {
@@ -139,6 +170,8 @@ public class PlayerGun : MonoBehaviour
     }
     void SetClipSize() {
         clipSize = Mathf.CeilToInt(clipSizeBase * clipSizeMod);
+        EvAmmoChanged e = new (_currentAmmo, clipSize);
+        EventManager.instance.Raise(e);
     }
 
     public void ChangeReloadTimeBase(float changeAmount) {
