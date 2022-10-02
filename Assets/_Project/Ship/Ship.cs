@@ -48,6 +48,14 @@ public class Ship : MonoBehaviour
         _invincibilityTimer = invincibilityTime;
     }
 
+    public void RecoverHealth(int amount) {
+        SetHealth(health += amount);
+    }
+
+    public void IncreaseHealthMax(int amount) {
+        SetHealthMax(healthMax += amount);
+    }
+
     void SetHealth(int newHealth) {
         health = newHealth;
         EvShipHealthChanged e = new (health, healthMax);

@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     }
 
     void Update() {
-        if (GameManager.Instance.isGameOver) return;
+        if (GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
         
         Vector3 pos = transform.position;
         Vector3 playerPos = _playerTransform.position;

@@ -26,7 +26,7 @@ public enum ActorAnimationState
         [SerializeField] SpriteRenderer sr;
         [SerializeField] Animator animator;
         [SerializeField] TopdownController2d topdownController;
-        [SerializeField] PlayerGun gun;
+        public PlayerGun gun;
         [SerializeField] Transform bulletSpawnTransform;
         [SerializeField] SpriteRenderer gunSr;
         [SerializeField] DeadPlayer deadPlayerPrefab;
@@ -57,7 +57,7 @@ public enum ActorAnimationState
         }
 
         void Update() {
-            if (GameManager.Instance.isGameOver) return;
+            if (GameManager.Instance.isGameOver || UpgradeManager.Instance.isUpgrading) return;
             
             if (isAlive && !_isRespawning) {
                 // movement
@@ -170,6 +170,7 @@ public enum ActorAnimationState
             ResetStats();
             _isRespawning = false;
             isAlive = true;
+            gun.Reload();
         }
 
         void SetBatterySecondsLeft(int seconds) {

@@ -42,13 +42,12 @@ public class GameManager : MonoBehaviour
     }
 
     void Update() {
-        if (!isGameOver) {
-            _gameSecondsRemaining -= Time.deltaTime;
-            SetGameTime();
-            
-            if (_gameSecondsRemaining <= 0f) {
-                GameWin();
-            }
+        if (isGameOver || UpgradeManager.Instance.isUpgrading) return;
+        _gameSecondsRemaining -= Time.deltaTime;
+        SetGameTime();
+        
+        if (_gameSecondsRemaining <= 0f) {
+            GameWin();
         }
     }
 

@@ -9,4 +9,6 @@ public enum UpgradeType
     ReloadTime = 6,
     BulletSpread = 7,
     PlayerMoveSpeed = 8,
+    ShipHealth = 9,
+    ShipHealthMax = 10,
 }

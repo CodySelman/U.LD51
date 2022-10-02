@@ -78,3 +78,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f89f5e9764cc8e409a41a84eadca01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xPText: {fileID: 0}
+  upgradePanel: {fileID: 0}
+  upgradeButtonOneText: {fileID: 0}
+  upgradeButtonTwoText: {fileID: 0}
+  upgradeButtonThreeText: {fileID: 0}
+  upgrades:
+  - {fileID: 11400000, guid: bd816b235fe98bb41a7177ddd63a18fd, type: 2}
+  - {fileID: 11400000, guid: 71841216ef20eee4e8a3ee1b63185ba2, type: 2}
+  - {fileID: 11400000, guid: 5dc74d7bacf877c41b22f8c58e7a675f, type: 2}
+  - {fileID: 11400000, guid: 0e1bf0270eea2904095d550f78721fff, type: 2}
+  - {fileID: 11400000, guid: d93cb13abb5736b478094d296a157ab0, type: 2}
+  - {fileID: 11400000, guid: 876468f8c1b2a184ebff02aa1d56cc39, type: 2}
+  - {fileID: 11400000, guid: b62dd9cd426a78f4b85fdc5ea9c06618, type: 2}
+  - {fileID: 11400000, guid: 390eb67ca24a7fc4795fac2d09b91774, type: 2}
+  xpIncreaseRate: 3
+  isUpgrading: 0
